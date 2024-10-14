@@ -64,6 +64,29 @@
             </exec>
         </target>
 
+ <!-- Compilar el código fuente -->
+    <target name="compile" depends="init">
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false">
+            <classpath>
+                <fileset dir="${lib.dir}">
+                    <include name="jmathplot.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+
+    <!-- Ejecutar el programa -->
+    <target name="run" depends="compile">
+        <java classname="PlotExample" fork="true">
+            <classpath>
+                <path path="${classes.dir}"/>
+                <fileset dir="${lib.dir}">
+                    <include name="jmathplot.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+
     Notice that the overridden target depends on the jar target and not only on 
     the compile target as the regular run target does. Again, for a list of available 
     properties which you can use, check the target you are overriding in the
