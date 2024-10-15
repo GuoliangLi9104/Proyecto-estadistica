@@ -1,10 +1,16 @@
 package Model;
-import View.Graphic;
+
+import View.Design;
+
 /**
  *
  * @author anama
  */
 public class Main {
-    Graphic graphic = new Graphic();
-   // graphic.setVisible(true);
+
+    public static void main(String[] args) {
+    Design graphic = new Design();
+    graphic.setVisible(true);
+    }
+
 }
