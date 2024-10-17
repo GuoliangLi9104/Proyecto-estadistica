@@ -1,32 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package View;
-import Model.*;
-import Controller.*;
-import com.singularsys.jep.JepException;
-import javax.swing.JOptionPane;
-import org.math.plot.Plot2DPanel;
 
+import javax.swing.JOptionPane;
+import Controller.CtrlData;
 /**
  *
- * @author Guoliang
+ * @author anama
  */
 public class Design extends javax.swing.JFrame {
-
-    Plot2DPanel Graphic; // Declara la variable del gráfico
+    CtrlData controller = new CtrlData();
+    private int limit =0;
 
     /**
-     * Creates new form Design
+     * Creates new form Desing
      */
     public Design() {
         initComponents();
-        this.setResizable(false);
         this.setLocationRelativeTo(null);
-        Graphic = new Plot2DPanel(); // Inicializa el panel de gráficos
-        Graphic.setBounds(370, 10, 390, 300); // Establece las dimensiones
-        add(Graphic); // Añade el gráfico al JFrame
+        this.setResizable(false);
+        this.loadTable();
+    }
+    
+    
+    private void loadTable(){
+    this.controller.loadCandidateData(this.tblData);
     }
 
     /**
@@ -38,182 +34,195 @@ public class Design extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlPrincipal = new javax.swing.JPanel();
-        lblFunction = new javax.swing.JLabel();
-        txtFunction = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
-        lblX0 = new javax.swing.JLabel();
-        lblX1 = new javax.swing.JLabel();
-        txtX0 = new javax.swing.JTextField();
-        txtX1 = new javax.swing.JTextField();
-        lblError = new javax.swing.JLabel();
-        lblEntero = new javax.swing.JLabel();
-        lblRaiz = new javax.swing.JLabel();
-        txtError = new javax.swing.JTextField();
-        txtEntero = new javax.swing.JTextField();
-        txtRaiz = new javax.swing.JTextField();
-        btnCalculate = new javax.swing.JButton();
-        btnExit = new javax.swing.JButton();
+        lblGraphicTitle = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblData = new javax.swing.JTable();
+        lblEnterDataTitle = new javax.swing.JLabel();
+        txtData = new javax.swing.JTextField();
+        btnEnterData = new javax.swing.JButton();
+        lblMoTitle = new javax.swing.JLabel();
+        txtMo = new javax.swing.JTextField();
+        lblMoTitle1 = new javax.swing.JLabel();
+        txtMe = new javax.swing.JTextField();
+        lblMoTitle2 = new javax.swing.JLabel();
+        txtX = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        pnlPrincipal.setBackground(new java.awt.Color(51, 204, 255));
-        pnlPrincipal.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "INGRESAR DATOS"));
-        pnlPrincipal.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        lblGraphicTitle.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        lblGraphicTitle.setText("Graficadora estadística");
 
-        lblFunction.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblFunction.setText("INGRESAR FUNCION:");
-        pnlPrincipal.add(lblFunction, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 42, -1, -1));
-        pnlPrincipal.add(txtFunction, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 40, 300, -1));
+        tblData.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
 
-        jPanel1.setBackground(new java.awt.Color(51, 204, 255));
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "INGRESAR PARAMETROS"));
-        jPanel1.setForeground(new java.awt.Color(51, 204, 255));
+            }
+        ));
+        jScrollPane1.setViewportView(tblData);
 
-        lblX0.setText("X2:");
+        lblEnterDataTitle.setText("Ingrese un dato para la lista");
 
-        lblX1.setText("X1:");
+        btnEnterData.setText("Ingresar");
+        btnEnterData.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEnterDataMouseClicked(evt);
+            }
+        });
+
+        lblMoTitle.setText("Mo");
+
+        txtMo.setEnabled(false);
+
+        lblMoTitle1.setText("Me");
+
+        txtMe.setEnabled(false);
+
+        lblMoTitle2.setText("X");
+
+        txtX.setEnabled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblX1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtX1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(325, 325, 325)
+                        .addComponent(lblGraphicTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblX0)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtX0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(69, Short.MAX_VALUE))
+                        .addGap(22, 22, 22)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 801, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(lblEnterDataTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(48, 48, 48)
+                                .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnEnterData, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(lblMoTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtMo, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblMoTitle1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtMe, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblMoTitle2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtX, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addGap(24, 24, 24)
+                .addComponent(lblGraphicTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblX0)
-                    .addComponent(txtX0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                    .addComponent(lblEnterDataTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEnterData, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(60, 60, 60)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(45, 45, 45)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblX1)
-                    .addComponent(txtX1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20))
+                    .addComponent(lblMoTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtMo, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblMoTitle1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtMe, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblMoTitle2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtX, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
-
-        pnlPrincipal.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 190, 130));
-
-        lblError.setText("ERROR:");
-        pnlPrincipal.add(lblError, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 110, -1, -1));
-
-        lblEntero.setText("maxEntero:");
-        pnlPrincipal.add(lblEntero, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 180, -1, -1));
-
-        lblRaiz.setText("RAIZ:");
-        pnlPrincipal.add(lblRaiz, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, -1, -1));
-
-        txtError.setText("1e-5");
-        txtError.setEnabled(false);
-        pnlPrincipal.add(txtError, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 110, -1, -1));
-
-        txtEntero.setText("100");
-        txtEntero.setEnabled(false);
-        pnlPrincipal.add(txtEntero, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 180, -1, -1));
-        pnlPrincipal.add(txtRaiz, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 330, -1));
-
-        btnCalculate.setBackground(new java.awt.Color(102, 255, 102));
-        btnCalculate.setText("Calcular");
-        btnCalculate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCalculateActionPerformed(evt);
-            }
-        });
-        pnlPrincipal.add(btnCalculate, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 330, -1, -1));
-
-        btnExit.setBackground(new java.awt.Color(255, 51, 51));
-        btnExit.setText("Salir");
-        btnExit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExitActionPerformed(evt);
-            }
-        });
-        pnlPrincipal.add(btnExit, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 330, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 545, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 448, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCalculateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalculateActionPerformed
-        String def=txtFunction.getText();
-        
-        double lx0=Double.parseDouble(txtX0.getText());
-        double lx1=Double.parseDouble(txtX1.getText());
-        double le=Double.parseDouble(txtError.getText());
-        int ln=Integer.parseInt(txtEntero.getText());
-        Function ff = new Function(def);
-        Method s = new Method();
-        double r = s.root(ff, lx0, lx1, ln, le);
-        txtRaiz.setText(""+r);
-        
-        double [] x = new double[200];
-        double [] y = new double[200];
-        double xi = lx0-10;
-       for (int i = 0; i < 200; i++) {
-    x[i] = xi + i * 0.1; // Calcula el valor de x
-    try {
-        y[i] = ff.value(x[i]); // Llama a value, manejando la excepción
-    } catch (JepException ex) {
-        // Maneja el error, por ejemplo, registrándolo o estableciendo y[i] a NaN
-        JOptionPane.showMessageDialog(null, "Error al evaluar la función para x = " + x[i] + ": " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        y[i] = Double.NaN; // Establece y[i] a NaN para este valor de x
+    private void btnEnterDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEnterDataMouseClicked
+    this.limit++;
+    this.validateLimit();
+    }//GEN-LAST:event_btnEnterDataMouseClicked
+
+    private void validateLimit(){
+    if (this.limit>=100){
+    this.btnEnterData.enable(false);
+    JOptionPane.showMessageDialog(null, "ERROR", "Llegó al límite de datos ingresados", JOptionPane.ERROR);
     }
-}
+    this.controller.addData(this.txtData);
+    }
+    
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Design.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Design.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Design.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Design.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
 
-        
-        // Añade la gráfica al panel
-        Graphic.addLegend("SOUTH");
-        Graphic.removeAllPlots(); // Limpia cualquier gráfica previa
-        Graphic.addLinePlot("f(x)", x, y); // Añade la nueva gráfica
-    }//GEN-LAST:event_btnCalculateActionPerformed
-
-    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_btnExitActionPerformed
-
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Design().setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCalculate;
-    private javax.swing.JButton btnExit;
+    private javax.swing.JButton btnEnterData;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel lblEntero;
-    private javax.swing.JLabel lblError;
-    private javax.swing.JLabel lblFunction;
-    private javax.swing.JLabel lblRaiz;
-    private javax.swing.JLabel lblX0;
-    private javax.swing.JLabel lblX1;
-    private javax.swing.JPanel pnlPrincipal;
-    private javax.swing.JTextField txtEntero;
-    private javax.swing.JTextField txtError;
-    private javax.swing.JTextField txtFunction;
-    private javax.swing.JTextField txtRaiz;
-    private javax.swing.JTextField txtX0;
-    private javax.swing.JTextField txtX1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblEnterDataTitle;
+    private javax.swing.JLabel lblGraphicTitle;
+    private javax.swing.JLabel lblMoTitle;
+    private javax.swing.JLabel lblMoTitle1;
+    private javax.swing.JLabel lblMoTitle2;
+    private javax.swing.JTable tblData;
+    private javax.swing.JTextField txtData;
+    private javax.swing.JTextField txtMe;
+    private javax.swing.JTextField txtMo;
+    private javax.swing.JTextField txtX;
     // End of variables declaration//GEN-END:variables
-
 }
