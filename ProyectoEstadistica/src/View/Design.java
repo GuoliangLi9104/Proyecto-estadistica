@@ -2,27 +2,32 @@ package View;
 
 import javax.swing.JOptionPane;
 import Controller.CtrlData;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author anama
  */
 public class Design extends javax.swing.JFrame {
-    CtrlData controller = new CtrlData();
-    private int limit =0;
+
+    CtrlData controller = new CtrlData();  // Controller instance
+    private int limit = 0;  // Data entry limit
+    public List<Double> list = new ArrayList<>();  // List of numbers
 
     /**
-     * Creates new form Desing
+     * Creates new form Design
      */
     public Design() {
         initComponents();
-        this.setLocationRelativeTo(null);
-        this.setResizable(false);
-        this.loadTable();
+        this.setLocationRelativeTo(null);  // Center the window
+        this.setResizable(false);  // Disable resizing
+        this.loadTable();  // Load initial table data
     }
-    
-    
-    private void loadTable(){
-    this.controller.loadCandidateData(this.tblData);
+
+    // Load the table with initial structure
+    private void loadTable() {
+        this.controller.loadTableData(this.tblData);
     }
 
     /**
@@ -35,23 +40,142 @@ public class Design extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        btnDeleteSelect = new javax.swing.JButton();
+        btnDeleteOne = new javax.swing.JButton();
         lblGraphicTitle = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblData = new javax.swing.JTable();
         lblEnterDataTitle = new javax.swing.JLabel();
         txtData = new javax.swing.JTextField();
         btnEnterData = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        txtTimes = new javax.swing.JTextField();
+        btnCalculate = new javax.swing.JButton();
+        pnlBottons = new javax.swing.JPanel();
+        btnColumns = new javax.swing.JButton();
+        btnOjiba = new javax.swing.JButton();
+        btnPie = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtAreaNum = new javax.swing.JTextArea();
+        pnlResults = new javax.swing.JPanel();
         lblMoTitle = new javax.swing.JLabel();
         txtMo = new javax.swing.JTextField();
         lblMoTitle1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblData = new javax.swing.JTable();
         txtMe = new javax.swing.JTextField();
         lblMoTitle2 = new javax.swing.JLabel();
         txtX = new javax.swing.JTextField();
+        lblBackground = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btnDeleteSelect.setText("Eliminar Select");
+        btnDeleteSelect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteSelectActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnDeleteSelect, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 260, -1, -1));
+
+        btnDeleteOne.setText("Eliminar Ult");
+        btnDeleteOne.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteOneActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnDeleteOne, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 260, -1, -1));
 
         lblGraphicTitle.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         lblGraphicTitle.setText("Graficadora estadística");
+        jPanel1.add(lblGraphicTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(288, 6, 206, 54));
+
+        lblEnterDataTitle.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblEnterDataTitle.setText("Ingrese un dato para la lista");
+        jPanel1.add(lblEnterDataTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 200, 30));
+        jPanel1.add(txtData, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 60, 199, 30));
+
+        btnEnterData.setText("Ingresar");
+        btnEnterData.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEnterDataMouseClicked(evt);
+            }
+        });
+        btnEnterData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnterDataActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnEnterData, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 110, 120, 30));
+
+        btnCancel.setText("Cancelar");
+        jPanel1.add(btnCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 350, -1, -1));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel1.setText("veces");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 70, -1, -1));
+        jPanel1.add(txtTimes, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 60, 159, 30));
+
+        btnCalculate.setText("Calcular");
+        btnCalculate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCalculateActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnCalculate, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 340, -1, -1));
+
+        pnlBottons.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Graficos"));
+        pnlBottons.setOpaque(false);
+        pnlBottons.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btnColumns.setText("Colmnas");
+        btnColumns.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnColumnsActionPerformed(evt);
+            }
+        });
+        pnlBottons.add(btnColumns, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, -1, -1));
+
+        btnOjiba.setText("Ojiba");
+        btnOjiba.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOjibaActionPerformed(evt);
+            }
+        });
+        pnlBottons.add(btnOjiba, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 130, -1, -1));
+
+        btnPie.setText("Pie");
+        btnPie.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPieActionPerformed(evt);
+            }
+        });
+        pnlBottons.add(btnPie, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 210, -1, -1));
+
+        jPanel1.add(pnlBottons, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 20, 190, 300));
+
+        txtAreaNum.setColumns(20);
+        txtAreaNum.setRows(5);
+        jScrollPane2.setViewportView(txtAreaNum);
+
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 573, -1));
+
+        pnlResults.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Resultados"));
+        pnlResults.setOpaque(false);
+        pnlResults.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblMoTitle.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblMoTitle.setText("Mo");
+        pnlResults.add(lblMoTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 34, 30));
+
+        txtMo.setEnabled(false);
+        pnlResults.add(txtMo, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 300, 56, 44));
+
+        lblMoTitle1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblMoTitle1.setText("Me");
+        pnlResults.add(lblMoTitle1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 310, 34, 30));
 
         tblData.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -66,114 +190,71 @@ public class Design extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblData);
 
-        lblEnterDataTitle.setText("Ingrese un dato para la lista");
-
-        btnEnterData.setText("Ingresar");
-        btnEnterData.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnEnterDataMouseClicked(evt);
-            }
-        });
-
-        lblMoTitle.setText("Mo");
-
-        txtMo.setEnabled(false);
-
-        lblMoTitle1.setText("Me");
+        pnlResults.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 19, 970, 260));
 
         txtMe.setEnabled(false);
+        pnlResults.add(txtMe, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 300, 56, 44));
 
+        lblMoTitle2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblMoTitle2.setText("X");
+        pnlResults.add(lblMoTitle2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 310, 34, 30));
 
         txtX.setEnabled(false);
+        pnlResults.add(txtX, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 300, 56, 44));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(325, 325, 325)
-                        .addComponent(lblGraphicTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 801, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(lblEnterDataTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(48, 48, 48)
-                                .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnEnterData, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(lblMoTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtMo, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(lblMoTitle1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtMe, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(lblMoTitle2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtX, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(20, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(lblGraphicTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblEnterDataTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEnterData, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(60, 60, 60)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblMoTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtMo, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblMoTitle1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtMe, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblMoTitle2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtX, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(28, Short.MAX_VALUE))
-        );
+        jPanel1.add(pnlResults, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 410, 990, 380));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 448, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        lblBackground.setForeground(new java.awt.Color(255, 255, 255));
+        lblBackground.setIcon(new javax.swing.ImageIcon("C:\\Users\\Guoliang\\OneDrive\\Escritorio\\Trabajos de la U\\VI Cuatrimestre\\Probabilidad y Estadística para Computación I\\Proyecto bueno\\Proyecto-estadistica\\ProyectoEstadistica\\Images\\Diseño sin título.png")); // NOI18N
+        jPanel1.add(lblBackground, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 800));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEnterDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEnterDataMouseClicked
-    this.limit++;
-    this.validateLimit();
+        this.limit++;
+        this.validateLimit();
     }//GEN-LAST:event_btnEnterDataMouseClicked
 
-    private void validateLimit(){
-    if (this.limit>=100){
-    this.btnEnterData.enable(false);
-    JOptionPane.showMessageDialog(null, "ERROR", "Llegó al límite de datos ingresados", JOptionPane.ERROR);
+    private void btnDeleteOneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteOneActionPerformed
+        controller.removeLastData(txtAreaNum);
+    }//GEN-LAST:event_btnDeleteOneActionPerformed
+
+    private void btnDeleteSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteSelectActionPerformed
+        controller.removeSpecificData(txtAreaNum);
+    }//GEN-LAST:event_btnDeleteSelectActionPerformed
+
+    private void btnEnterDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnterDataActionPerformed
+        controller.addNumbersMultipleTimes(txtData, txtTimes, txtAreaNum);
+    }//GEN-LAST:event_btnEnterDataActionPerformed
+
+    private void btnCalculateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalculateActionPerformed
+
+        controller.processAndCalculate(txtAreaNum, tblData, txtMe, txtX, txtMo);
+    }//GEN-LAST:event_btnCalculateActionPerformed
+
+    private void btnColumnsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColumnsActionPerformed
+        controller.generateBarChart(tblData);
+    }//GEN-LAST:event_btnColumnsActionPerformed
+
+    private void btnOjibaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOjibaActionPerformed
+      controller.generatePieChart(tblData);
+    }//GEN-LAST:event_btnOjibaActionPerformed
+
+    private void btnPieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPieActionPerformed
+        controller.generateOgiveChart(tblData);
+    }//GEN-LAST:event_btnPieActionPerformed
+
+    private void validateLimit() {
+        if (this.limit >= 100) {
+            this.btnEnterData.enable(false);
+            JOptionPane.showMessageDialog(null, "ERROR", "Llegó al límite de datos ingresados", JOptionPane.ERROR);
+        }
+        this.controller.addData(this.txtData);
     }
-    this.controller.addData(this.txtData);
-    }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -211,18 +292,32 @@ public class Design extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCalculate;
+    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnColumns;
+    private javax.swing.JButton btnDeleteOne;
+    private javax.swing.JButton btnDeleteSelect;
     private javax.swing.JButton btnEnterData;
+    private javax.swing.JButton btnOjiba;
+    private javax.swing.JButton btnPie;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblBackground;
     private javax.swing.JLabel lblEnterDataTitle;
     private javax.swing.JLabel lblGraphicTitle;
     private javax.swing.JLabel lblMoTitle;
     private javax.swing.JLabel lblMoTitle1;
     private javax.swing.JLabel lblMoTitle2;
+    private javax.swing.JPanel pnlBottons;
+    private javax.swing.JPanel pnlResults;
     private javax.swing.JTable tblData;
+    private javax.swing.JTextArea txtAreaNum;
     private javax.swing.JTextField txtData;
     private javax.swing.JTextField txtMe;
     private javax.swing.JTextField txtMo;
+    private javax.swing.JTextField txtTimes;
     private javax.swing.JTextField txtX;
     // End of variables declaration//GEN-END:variables
 }
