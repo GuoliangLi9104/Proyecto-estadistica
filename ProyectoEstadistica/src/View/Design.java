@@ -1,9 +1,6 @@
 package View;
 
-import javax.swing.JOptionPane;
 import Controller.CtrlData;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -12,8 +9,6 @@ import java.util.List;
 public class Design extends javax.swing.JFrame {
 
     CtrlData controller = new CtrlData();  // Controller instance
-    private int limit = 0;  // Data entry limit
-    public List<Double> list = new ArrayList<>();  // List of numbers
 
     /**
      * Creates new form Design
@@ -40,22 +35,18 @@ public class Design extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        btnDeleteSelect = new javax.swing.JButton();
-        btnDeleteOne = new javax.swing.JButton();
         lblGraphicTitle = new javax.swing.JLabel();
         lblEnterDataTitle = new javax.swing.JLabel();
-        txtData = new javax.swing.JTextField();
-        btnEnterData = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        txtTimes = new javax.swing.JTextField();
+        txtClasses = new javax.swing.JTextField();
         btnCalculate = new javax.swing.JButton();
         pnlBottons = new javax.swing.JPanel();
         btnColumns = new javax.swing.JButton();
         btnOjiba = new javax.swing.JButton();
         btnPie = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        txtAreaNum = new javax.swing.JTextArea();
+        txtData = new javax.swing.JTextArea();
         pnlResults = new javax.swing.JPanel();
         lblMoTitle = new javax.swing.JLabel();
         txtMo = new javax.swing.JTextField();
@@ -72,51 +63,26 @@ public class Design extends javax.swing.JFrame {
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnDeleteSelect.setText("Eliminar Select");
-        btnDeleteSelect.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteSelectActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnDeleteSelect, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 260, -1, -1));
-
-        btnDeleteOne.setText("Eliminar Ult");
-        btnDeleteOne.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteOneActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnDeleteOne, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 260, -1, -1));
-
-        lblGraphicTitle.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        lblGraphicTitle.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         lblGraphicTitle.setText("Graficadora estadística");
-        jPanel1.add(lblGraphicTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(288, 6, 206, 54));
+        jPanel1.add(lblGraphicTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 10, 210, 54));
 
         lblEnterDataTitle.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblEnterDataTitle.setText("Ingrese un dato para la lista");
-        jPanel1.add(lblEnterDataTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 200, 30));
-        jPanel1.add(txtData, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 60, 199, 30));
-
-        btnEnterData.setText("Ingresar");
-        btnEnterData.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnEnterDataMouseClicked(evt);
-            }
-        });
-        btnEnterData.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEnterDataActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnEnterData, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 110, 120, 30));
+        lblEnterDataTitle.setText("Ingrese la lista separada por coma");
+        jPanel1.add(lblEnterDataTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 250, 30));
 
         btnCancel.setText("Cancelar");
-        jPanel1.add(btnCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 350, -1, -1));
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 250, 90, 40));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel1.setText("veces");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 70, -1, -1));
-        jPanel1.add(txtTimes, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 60, 159, 30));
+        jLabel1.setText("Clases");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 60, -1, -1));
+        jPanel1.add(txtClasses, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 90, 190, 40));
 
         btnCalculate.setText("Calcular");
         btnCalculate.addActionListener(new java.awt.event.ActionListener() {
@@ -124,7 +90,7 @@ public class Design extends javax.swing.JFrame {
                 btnCalculateActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCalculate, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 340, -1, -1));
+        jPanel1.add(btnCalculate, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 250, 90, 40));
 
         pnlBottons.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Graficos"));
         pnlBottons.setOpaque(false);
@@ -136,7 +102,7 @@ public class Design extends javax.swing.JFrame {
                 btnColumnsActionPerformed(evt);
             }
         });
-        pnlBottons.add(btnColumns, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, -1, -1));
+        pnlBottons.add(btnColumns, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 90, 40));
 
         btnOjiba.setText("Ojiba");
         btnOjiba.addActionListener(new java.awt.event.ActionListener() {
@@ -144,7 +110,7 @@ public class Design extends javax.swing.JFrame {
                 btnOjibaActionPerformed(evt);
             }
         });
-        pnlBottons.add(btnOjiba, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 130, -1, -1));
+        pnlBottons.add(btnOjiba, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 120, 90, 40));
 
         btnPie.setText("Pie");
         btnPie.addActionListener(new java.awt.event.ActionListener() {
@@ -152,15 +118,15 @@ public class Design extends javax.swing.JFrame {
                 btnPieActionPerformed(evt);
             }
         });
-        pnlBottons.add(btnPie, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 210, -1, -1));
+        pnlBottons.add(btnPie, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 200, 90, 40));
 
-        jPanel1.add(pnlBottons, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 20, 190, 300));
+        jPanel1.add(pnlBottons, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 20, 190, 270));
 
-        txtAreaNum.setColumns(20);
-        txtAreaNum.setRows(5);
-        jScrollPane2.setViewportView(txtAreaNum);
+        txtData.setColumns(20);
+        txtData.setRows(5);
+        jScrollPane2.setViewportView(txtData);
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 573, -1));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 340, 50));
 
         pnlResults.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Resultados"));
         pnlResults.setOpaque(false);
@@ -168,14 +134,14 @@ public class Design extends javax.swing.JFrame {
 
         lblMoTitle.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblMoTitle.setText("Mo");
-        pnlResults.add(lblMoTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 34, 30));
+        pnlResults.add(lblMoTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 34, 30));
 
         txtMo.setEnabled(false);
-        pnlResults.add(txtMo, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 300, 56, 44));
+        pnlResults.add(txtMo, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 270, 56, 44));
 
         lblMoTitle1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblMoTitle1.setText("Me");
-        pnlResults.add(lblMoTitle1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 310, 34, 30));
+        pnlResults.add(lblMoTitle1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 280, 34, 30));
 
         tblData.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -188,116 +154,59 @@ public class Design extends javax.swing.JFrame {
 
             }
         ));
+        tblData.setEnabled(false);
+        tblData.setRowSelectionAllowed(false);
         jScrollPane1.setViewportView(tblData);
 
-        pnlResults.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 19, 970, 260));
+        pnlResults.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 19, 970, 230));
 
         txtMe.setEnabled(false);
-        pnlResults.add(txtMe, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 300, 56, 44));
+        pnlResults.add(txtMe, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 270, 56, 44));
 
         lblMoTitle2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblMoTitle2.setText("X");
-        pnlResults.add(lblMoTitle2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 310, 34, 30));
+        pnlResults.add(lblMoTitle2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 280, 34, 30));
 
         txtX.setEnabled(false);
-        pnlResults.add(txtX, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 300, 56, 44));
+        pnlResults.add(txtX, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 270, 56, 44));
 
-        jPanel1.add(pnlResults, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 410, 990, 380));
+        jPanel1.add(pnlResults, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 990, 340));
 
         lblBackground.setForeground(new java.awt.Color(255, 255, 255));
-        lblBackground.setIcon(new javax.swing.ImageIcon("C:\\Users\\Guoliang\\OneDrive\\Escritorio\\Trabajos de la U\\VI Cuatrimestre\\Probabilidad y Estadística para Computación I\\Proyecto bueno\\Proyecto-estadistica\\ProyectoEstadistica\\Images\\Diseño sin título.png")); // NOI18N
-        jPanel1.add(lblBackground, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 800));
+        lblBackground.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Diseño sin título.png"))); // NOI18N
+        jPanel1.add(lblBackground, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 670));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnEnterDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEnterDataMouseClicked
-        this.limit++;
-        this.validateLimit();
-    }//GEN-LAST:event_btnEnterDataMouseClicked
-
-    private void btnDeleteOneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteOneActionPerformed
-        controller.removeLastData(txtAreaNum);
-    }//GEN-LAST:event_btnDeleteOneActionPerformed
-
-    private void btnDeleteSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteSelectActionPerformed
-        controller.removeSpecificData(txtAreaNum);
-    }//GEN-LAST:event_btnDeleteSelectActionPerformed
-
-    private void btnEnterDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnterDataActionPerformed
-        controller.addNumbersMultipleTimes(txtData, txtTimes, txtAreaNum);
-    }//GEN-LAST:event_btnEnterDataActionPerformed
-
     private void btnCalculateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalculateActionPerformed
-
-        controller.processAndCalculate(txtAreaNum, tblData, txtMe, txtX, txtMo);
+        this.controller.addNumbers(txtClasses, txtData, tblData, txtMe, txtX, txtMo);
     }//GEN-LAST:event_btnCalculateActionPerformed
+
 
     private void btnColumnsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColumnsActionPerformed
         controller.generateBarChart(tblData);
     }//GEN-LAST:event_btnColumnsActionPerformed
 
     private void btnOjibaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOjibaActionPerformed
-      controller.generatePieChart(tblData);
+        controller.generateOgiveChart(tblData);
     }//GEN-LAST:event_btnOjibaActionPerformed
 
     private void btnPieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPieActionPerformed
-        controller.generateOgiveChart(tblData);
+        controller.generatePieChart(tblData);
     }//GEN-LAST:event_btnPieActionPerformed
 
-    private void validateLimit() {
-        if (this.limit >= 100) {
-            this.btnEnterData.enable(false);
-            JOptionPane.showMessageDialog(null, "ERROR", "Llegó al límite de datos ingresados", JOptionPane.ERROR);
-        }
-        this.controller.addData(this.txtData);
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Design.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Design.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Design.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Design.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Design().setVisible(true);
-            }
-        });
-    }
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        this.txtClasses.setText("");
+        this.txtData.setText("");
+    }//GEN-LAST:event_btnCancelActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCalculate;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnColumns;
-    private javax.swing.JButton btnDeleteOne;
-    private javax.swing.JButton btnDeleteSelect;
-    private javax.swing.JButton btnEnterData;
     private javax.swing.JButton btnOjiba;
     private javax.swing.JButton btnPie;
     private javax.swing.JLabel jLabel1;
@@ -313,11 +222,10 @@ public class Design extends javax.swing.JFrame {
     private javax.swing.JPanel pnlBottons;
     private javax.swing.JPanel pnlResults;
     private javax.swing.JTable tblData;
-    private javax.swing.JTextArea txtAreaNum;
-    private javax.swing.JTextField txtData;
+    private javax.swing.JTextField txtClasses;
+    private javax.swing.JTextArea txtData;
     private javax.swing.JTextField txtMe;
     private javax.swing.JTextField txtMo;
-    private javax.swing.JTextField txtTimes;
     private javax.swing.JTextField txtX;
     // End of variables declaration//GEN-END:variables
 }

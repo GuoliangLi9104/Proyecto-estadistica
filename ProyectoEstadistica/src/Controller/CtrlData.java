@@ -7,6 +7,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.util.Collections;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -19,8 +21,8 @@ public class CtrlData {
     String[] columns = {
         "Limites Indicados", "Limites Reales", "Puntos Medios Xi",
         "Frecuencia absoluta", "Frecuencia Relativa",
-        "ACUM absoluta(-)", "ACUM Relativa(-)",
-        "ACUM absoluta(+)", "ACUM Relativa(+)"};
+        "ACUM absoluta(+)", "ACUM Relativa(+)",
+        "ACUM absoluta(-)", "ACUM Relativa(-)"};
 
     public List<Double> dataList = new ArrayList<>();
     DefaultTableModel model = new DefaultTableModel();
@@ -42,12 +44,20 @@ public class CtrlData {
         double interval = range / classes;
 
         model.setRowCount(classes);  // Set the number of rows based on classes
+        model.addRow(new Object[]{null, null, null, null}); //Add a row to add a Total row
+        double lowerLimit=0;
+        double upperLimit=0;
 
         for (int i = 0; i < classes; i++) {
-            double lowerLimit = min + (i * interval);
-            double upperLimit = min + ((i + 1) * interval);
+           lowerLimit = min + (i * interval);
+           upperLimit = min + ((i + 1) * interval);
             double adjustedUpper = upperLimit - 1;
-
+            if (i==classes-1){
+            model.setValueAt(String.format("%.2f-%.2f", lowerLimit, max), classes-1, 0);
+            calculateSecondColumn(table, max, lowerLimit, i);
+            calculateFourthColumn(max, lowerLimit, i);
+            return;
+            }
             model.setValueAt(String.format("%.2f-%.2f", lowerLimit, adjustedUpper), i, 0);
             calculateSecondColumn(table, adjustedUpper, lowerLimit, i);
             calculateFourthColumn(adjustedUpper, lowerLimit, i);
@@ -72,12 +82,9 @@ public class CtrlData {
     // Calculate Absolute Frequency
     public void calculateFourthColumn(double upper, double lower, int i) {
         int frequency = 0;
-        int lowerInt = (int) Math.floor(lower);
-        int upperInt = (int) Math.floor(upper);
 
         for (Double value : dataList) {
-            int intValue = value.intValue();
-            if (intValue >= lowerInt && intValue <= upperInt) {
+            if (value >= lower && value <= upper) {
                 frequency++;
             }
         }
@@ -89,19 +96,18 @@ public class CtrlData {
         if (dataList.isEmpty()) {
             return;  // Prevent division by zero
         }
-        for (int i = 0; i < table.getRowCount(); i++) {
+        for (int i = 0; i < table.getRowCount()-1; i++) {
             int absFreq = (int) table.getValueAt(i, 3);
-            double relativeFreq = (double) absFreq / dataList.size() * 100;
+            double relativeFreq = (double) absFreq / dataList.size() * 100;;
             model.setValueAt(relativeFreq, i, 4);
         }
     }
 
-// Calculate Cumulative Absolute and Relative Frequency (-)
+// Calculate Cumulative Absolute and Relative Frequency (+)
     public void calculateSixthColumn(JTable table) {
         int cumulativeAbs = 0;
         double cumulativeRel = 0.0;
-
-        for (int i = 0; i < table.getRowCount(); i++) {
+        for (int i = 0; i < table.getRowCount()-1; i++) {
             // Asegurar que no sean nulos
             Integer absFreq = (Integer) table.getValueAt(i, 3);  // Frecuencia absoluta
             if (absFreq == null) {
@@ -122,7 +128,7 @@ public class CtrlData {
         }
     }
 
-// Calculate Cumulative Absolute and Relative Frequency (+)
+// Calculate Cumulative Absolute and Relative Frequency (-)
     public void calculateSeventhColumn(JTable table) {
         int cumulativeAbs = 0;
         double cumulativeRel = 0.0;
@@ -147,19 +153,21 @@ public class CtrlData {
             model.setValueAt(cumulativeRel, i, 8); // Columna 8: Acumulada relativa (+)
         }
     }
+    
+    //Method to add totals at the end of the table
+    private void getTotal() {
+        double totalFi = 0;
+        double totalRe = 0;
 
-    // ------------------ AUXILIARY METHODS --------------------------------
-    // Add data to the list
-    public void addData(JTextField txtData) {
-        try {
-            String input = txtData.getText().trim().replace(",", ".");  // Reemplaza coma por punto
-            double value = Double.parseDouble(input);  // Convierte a double
-            dataList.add(value);  // Añade a la lista
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Please enter a valid number.");
+        for (int i = 0; i < model.getRowCount() - 1; i++) {
+            totalFi += Double.parseDouble(model.getValueAt(i, 3).toString());
+            totalRe += Double.parseDouble(model.getValueAt(i, 4).toString());
         }
+        model.setValueAt(totalFi, model.getRowCount()-1, 3);
+        model.setValueAt(totalRe, model.getRowCount()-1, 4);
     }
 
+    // ------------------ AUXILIARY METHODS --------------------------------
     // Load table columns
     public void loadTableData(JTable table) {
         model.setRowCount(0);
@@ -173,72 +181,34 @@ public class CtrlData {
         table.setModel(model);
     }
 
-    // Remove the last data entry
-    public void removeLastData(JTextArea txtAreaData) {
-        if (!dataList.isEmpty()) {
-            dataList.remove(dataList.size() - 1);
-            updateTextArea(txtAreaData);
-        } else {
-            JOptionPane.showMessageDialog(null, "The list is empty. No data to remove.");
-        }
-    }
+    // Add a numbers to the list and update the text area
+    public void addNumbers(JTextField txtClasses, JTextArea txtAreaData, JTable tblData, JTextField txtMe, JTextField txtX, JTextField txtMo) {
+        String texto = txtAreaData.getText();
+        String[] valores = texto.split(",");
 
-    // Update the text area with the current list
-    private void updateTextArea(JTextArea txtAreaData) {
-        StringBuilder content = new StringBuilder();
-        for (Double number : dataList) {
-            content.append(number).append(" ");
-        }
-        txtAreaData.setText(content.toString());
-    }
-
-    // Remove specific number from the list
-    public void removeSpecificData(JTextArea txtAreaData) {
-        JPanel panel = new JPanel();
-        panel.add(new JLabel("Enter the number to remove:"));
-        JTextField txtNumber = new JTextField(10);
-        panel.add(txtNumber);
-
-        int result = JOptionPane.showConfirmDialog(null, panel, "Remove Number", JOptionPane.OK_CANCEL_OPTION);
-        if (result == JOptionPane.OK_OPTION) {
-            try {
-                double number = Double.parseDouble(txtNumber.getText());
-                if (dataList.contains(number)) {
-                    dataList.removeIf(n -> n.equals(number));
-                    updateTextArea(txtAreaData);
-                    JOptionPane.showMessageDialog(null, "All occurrences of the number " + number + " have been removed.");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Number not found in the list.");
+        if (valores.length > 10 && this.validateNumber(txtClasses.getText())) {//to validate the amount of numbers
+            for (String valor : valores) {
+                try {
+                    this.dataList.add(Double.parseDouble(valor.trim()));
+                } catch (NumberFormatException e) {
+                    System.out.println("Valor no válido debe ingresar solo números: " + valor);
                 }
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Please enter a valid number.");
             }
+            this.processAndCalculate(txtAreaData, tblData, txtMe, txtX, txtMo, txtClasses);
         }
+        JOptionPane.showMessageDialog(null, "La lista debe ser mayor a 10 y solo numeros decimales (.) y enteros\nLas clases no deben ir vacias, solo entero mayor a 1",
+                "ERROR", JOptionPane.ERROR_MESSAGE);
+        txtClasses.setText("");
+        txtAreaData.setText("");
+        return;
     }
 
-    // Add a number multiple times to the list and update the text area
-    public void addNumbersMultipleTimes(JTextField txtNumber, JTextField txtTimes, JTextArea txtAreaData) {
-        try {
-            double number = Double.parseDouble(txtNumber.getText());
-            int times = Integer.parseInt(txtTimes.getText());
-
-            for (int i = 0; i < times; i++) {
-                dataList.add(number);
-            }
-            updateTextArea(txtAreaData);
-            txtNumber.setText("");
-            txtTimes.setText("");
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Please enter valid numbers.");
-        }
-    }
 // Método para calcular la Media Aritmética
-
     public double calculateMean(JTable table) {
         double sumOfProducts = 0;
         int totalFrequency = 0;
 
-        for (int i = 0; i < table.getRowCount(); i++) {
+        for (int i = 0; i < table.getRowCount() - 1; i++) {
             Double midpoint = (Double) table.getValueAt(i, 2);  // Puntos Medios Xi
             Integer frequency = (Integer) table.getValueAt(i, 3);  // Frecuencia Absoluta
 
@@ -256,7 +226,7 @@ public class CtrlData {
     public double calculateMedian(JTable table) {
         int totalFrequency = 0;
 
-        for (int i = 0; i < table.getRowCount(); i++) {
+        for (int i = 0; i < table.getRowCount()-1; i++) {
             Integer frequency = (Integer) table.getValueAt(i, 3);
             if (frequency != null) {
                 totalFrequency += frequency;
@@ -267,7 +237,7 @@ public class CtrlData {
         int cumulativeFrequency = 0;
         double median = 0;
 
-        for (int i = 0; i < table.getRowCount(); i++) {
+        for (int i = 0; i < table.getRowCount() - 1; i++) {
             Integer frequency = (Integer) table.getValueAt(i, 3);
             if (frequency != null) {
                 cumulativeFrequency += frequency;
@@ -292,7 +262,7 @@ public class CtrlData {
         int maxFrequency = 0;
         double mode = 0;
 
-        for (int i = 0; i < table.getRowCount(); i++) {
+        for (int i = 0; i < table.getRowCount() - 1; i++) {
             Integer frequency = (Integer) table.getValueAt(i, 3);
             if (frequency != null && frequency > maxFrequency) {
                 maxFrequency = frequency;
@@ -315,12 +285,10 @@ public class CtrlData {
         return mode;
     }
 
-    public void processAndCalculate(JTextArea txtAreaNum, JTable tblData, JTextField txtMe, JTextField txtX, JTextField txtMo) {
+    public void processAndCalculate(JTextArea txtAreaNum, JTable tblData, JTextField txtMe, JTextField txtX, JTextField txtMo, JTextField txtClasses) {
         // Obtener los datos del JTextArea
         String[] dataEntries = txtAreaNum.getText().split(" ");
 
-        // Limpiar la lista existente y añadir los nuevos datos
-        dataList.clear();
         for (String entry : dataEntries) {
             entry = entry.trim();  // Eliminar espacios
             if (!entry.isEmpty()) {  // Evitar entradas vacías
@@ -336,10 +304,14 @@ public class CtrlData {
 
         // Cargar las columnas de la tabla y realizar los cálculos
         loadTableData(tblData);
-        calculateFirstColumn(tblData, 5);  // Ejemplo: 5 clases
+        calculateFirstColumn(tblData, Integer.parseInt(txtClasses.getText()));
         calculateFifthColumn(tblData);  // Frecuencia relativa
         calculateSixthColumn(tblData);  // Acumulada (-)
         calculateSeventhColumn(tblData);  // Acumulada (+)
+
+        //TO ADD TOTAL VIEW IN THE TABLE
+        model.setValueAt("TOTAL", model.getRowCount() - 1, 2);
+        this.getTotal(); //method to calcule the totals
 
         // Calcular y mostrar la media
         double mean = calculateMean(tblData);
@@ -353,13 +325,13 @@ public class CtrlData {
         double mode = calculateMode(tblData);
         txtMo.setText(String.format("%.2f", mode));
     }
-// Método para generar una gráfica de columnas (Bar Chart)
 
+// Método para generar una gráfica de columnas (Bar Chart)
     public void generateBarChart(JTable table) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
         // Leer los datos desde la tabla para crear el dataset
-        for (int i = 0; i < table.getRowCount(); i++) {
+        for (int i = 0; i < table.getRowCount() - 1; i++) {
             String interval = (String) table.getValueAt(i, 0);  // Limites Indicados
             Integer frequency = (Integer) table.getValueAt(i, 3);  // Frecuencia Absoluta
             dataset.addValue(frequency, "Frecuencia", interval);
@@ -382,7 +354,7 @@ public class CtrlData {
         DefaultPieDataset dataset = new DefaultPieDataset();
 
         // Leer los datos desde la tabla para crear el dataset
-        for (int i = 0; i < table.getRowCount(); i++) {
+        for (int i = 0; i < table.getRowCount() - 1; i++) {
             String interval = (String) table.getValueAt(i, 0);  // Limites Indicados
             Double relativeFrequency = (Double) table.getValueAt(i, 4);  // Frecuencia Relativa
             dataset.setValue(interval, relativeFrequency);
@@ -403,7 +375,7 @@ public class CtrlData {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
         // Leer los datos acumulados desde la tabla
-        for (int i = 0; i < table.getRowCount(); i++) {
+        for (int i = 0; i < table.getRowCount() - 1; i++) {
             String interval = (String) table.getValueAt(i, 0);  // Limites Indicados
             Integer cumulativeAbs = (Integer) table.getValueAt(i, 5);  // Acumulada Absoluta (-)
             dataset.addValue(cumulativeAbs, "Frecuencia Acumulada", interval);
@@ -427,6 +399,15 @@ public class CtrlData {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.add(new ChartPanel(chart));
         frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
         frame.setVisible(true);
+    }
+
+    //METODO PARA VALIDAR EL TXTCLASSES
+    public boolean validateNumber(String valor) {
+        Pattern patron = Pattern.compile("[1-9]*");
+        Matcher m = patron.matcher(valor);
+        return m.matches();
     }
 }
