@@ -41,6 +41,7 @@ public class Design extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         txtClasses = new javax.swing.JTextField();
         btnCalculate = new javax.swing.JButton();
+        btnResults = new javax.swing.JButton();
         pnlBottons = new javax.swing.JPanel();
         btnColumns = new javax.swing.JButton();
         btnOjiba = new javax.swing.JButton();
@@ -77,7 +78,7 @@ public class Design extends javax.swing.JFrame {
                 btnCancelActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 250, 90, 40));
+        jPanel1.add(btnCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 90, 40));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("Clases");
@@ -90,7 +91,15 @@ public class Design extends javax.swing.JFrame {
                 btnCalculateActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCalculate, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 250, 90, 40));
+        jPanel1.add(btnCalculate, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 250, 90, 40));
+
+        btnResults.setText("Resultados");
+        btnResults.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResultsActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnResults, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 250, 90, 40));
 
         pnlBottons.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Graficos"));
         pnlBottons.setOpaque(false);
@@ -203,12 +212,17 @@ public class Design extends javax.swing.JFrame {
         this.txtData.setText("");
     }//GEN-LAST:event_btnCancelActionPerformed
 
+    private void btnResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResultsActionPerformed
+        controller.mostrarResultadosDesdeTabla(tblData);
+    }//GEN-LAST:event_btnResultsActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCalculate;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnColumns;
     private javax.swing.JButton btnOjiba;
     private javax.swing.JButton btnPie;
+    private javax.swing.JButton btnResults;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

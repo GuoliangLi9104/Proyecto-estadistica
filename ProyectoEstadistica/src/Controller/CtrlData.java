@@ -1,5 +1,9 @@
 package Controller;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -7,6 +11,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.jfree.chart.ChartFactory;
@@ -45,18 +51,18 @@ public class CtrlData {
 
         model.setRowCount(classes);  // Set the number of rows based on classes
         model.addRow(new Object[]{null, null, null, null}); //Add a row to add a Total row
-        double lowerLimit=0;
-        double upperLimit=0;
+        double lowerLimit = 0;
+        double upperLimit = 0;
 
         for (int i = 0; i < classes; i++) {
-           lowerLimit = min + (i * interval);
-           upperLimit = min + ((i + 1) * interval);
+            lowerLimit = min + (i * interval);
+            upperLimit = min + ((i + 1) * interval);
             double adjustedUpper = upperLimit - 1;
-            if (i==classes-1){
-            model.setValueAt(String.format("%.2f-%.2f", lowerLimit, max), classes-1, 0);
-            calculateSecondColumn(table, max, lowerLimit, i);
-            calculateFourthColumn(max, lowerLimit, i);
-            return;
+            if (i == classes - 1) {
+                model.setValueAt(String.format("%.2f-%.2f", lowerLimit, max), classes - 1, 0);
+                calculateSecondColumn(table, max, lowerLimit, i);
+                calculateFourthColumn(max, lowerLimit, i);
+                return;
             }
             model.setValueAt(String.format("%.2f-%.2f", lowerLimit, adjustedUpper), i, 0);
             calculateSecondColumn(table, adjustedUpper, lowerLimit, i);
@@ -96,7 +102,7 @@ public class CtrlData {
         if (dataList.isEmpty()) {
             return;  // Prevent division by zero
         }
-        for (int i = 0; i < table.getRowCount()-1; i++) {
+        for (int i = 0; i < table.getRowCount() - 1; i++) {
             int absFreq = (int) table.getValueAt(i, 3);
             double relativeFreq = (double) absFreq / dataList.size() * 100;;
             model.setValueAt(relativeFreq, i, 4);
@@ -107,7 +113,7 @@ public class CtrlData {
     public void calculateSixthColumn(JTable table) {
         int cumulativeAbs = 0;
         double cumulativeRel = 0.0;
-        for (int i = 0; i < table.getRowCount()-1; i++) {
+        for (int i = 0; i < table.getRowCount() - 1; i++) {
             // Asegurar que no sean nulos
             Integer absFreq = (Integer) table.getValueAt(i, 3);  // Frecuencia absoluta
             if (absFreq == null) {
@@ -153,7 +159,7 @@ public class CtrlData {
             model.setValueAt(cumulativeRel, i, 8); // Columna 8: Acumulada relativa (+)
         }
     }
-    
+
     //Method to add totals at the end of the table
     private void getTotal() {
         double totalFi = 0;
@@ -163,8 +169,8 @@ public class CtrlData {
             totalFi += Double.parseDouble(model.getValueAt(i, 3).toString());
             totalRe += Double.parseDouble(model.getValueAt(i, 4).toString());
         }
-        model.setValueAt(totalFi, model.getRowCount()-1, 3);
-        model.setValueAt(totalRe, model.getRowCount()-1, 4);
+        model.setValueAt(totalFi, model.getRowCount() - 1, 3);
+        model.setValueAt(totalRe, model.getRowCount() - 1, 4);
     }
 
     // ------------------ AUXILIARY METHODS --------------------------------
@@ -186,21 +192,21 @@ public class CtrlData {
         String texto = txtAreaData.getText();
         String[] valores = texto.split(",");
 
-        if (valores.length > 10 && this.validateNumber(txtClasses.getText())) {//to validate the amount of numbers
+        if (valores.length >= 10 && this.validateNumber(txtClasses.getText())) {
             for (String valor : valores) {
                 try {
                     this.dataList.add(Double.parseDouble(valor.trim()));
                 } catch (NumberFormatException e) {
-                    System.out.println("Valor no válido debe ingresar solo números: " + valor);
+                    System.out.println("Valor no válido. Debe ingresar solo números: " + valor);
                 }
             }
             this.processAndCalculate(txtAreaData, tblData, txtMe, txtX, txtMo, txtClasses);
+        } else {
+            JOptionPane.showMessageDialog(null, "La lista debe ser mayor o igual a 10 y contener solo números decimales o enteros. Además, el número de clases debe ser un entero mayor a 1.",
+                    "ERROR", JOptionPane.ERROR_MESSAGE);
+            txtClasses.setText("");
+            txtAreaData.setText("");
         }
-        JOptionPane.showMessageDialog(null, "La lista debe ser mayor a 10 y solo numeros decimales (.) y enteros\nLas clases no deben ir vacias, solo entero mayor a 1",
-                "ERROR", JOptionPane.ERROR_MESSAGE);
-        txtClasses.setText("");
-        txtAreaData.setText("");
-        return;
     }
 
 // Método para calcular la Media Aritmética
@@ -226,7 +232,7 @@ public class CtrlData {
     public double calculateMedian(JTable table) {
         int totalFrequency = 0;
 
-        for (int i = 0; i < table.getRowCount()-1; i++) {
+        for (int i = 0; i < table.getRowCount() - 1; i++) {
             Integer frequency = (Integer) table.getValueAt(i, 3);
             if (frequency != null) {
                 totalFrequency += frequency;
@@ -258,73 +264,110 @@ public class CtrlData {
     }
 
 // Método para calcular la Moda
-    public double calculateMode(JTable table) {
-        int maxFrequency = 0;
-        double mode = 0;
+public double calculateModeFromText(String textData, JTextField txtMo) {
+    // Lista para almacenar las frecuencias de cada número
+    List<Double> dataList = new ArrayList<>();
+    Map<Double, Integer> frequencyMap = new HashMap<>();
 
-        for (int i = 0; i < table.getRowCount() - 1; i++) {
-            Integer frequency = (Integer) table.getValueAt(i, 3);
-            if (frequency != null && frequency > maxFrequency) {
-                maxFrequency = frequency;
+    // Dividir la cadena por comas o espacios
+    String[] dataEntries = textData.split("[,\\s]+");
 
-                // Asegurar que el formato sea el correcto
-                String lowerLimitStr = table.getValueAt(i, 0).toString().split("-")[0].replace(",", ".");
-                String upperLimitStr = table.getValueAt(i, 1).toString().split("-")[1].replace(",", ".");
-
-                Double lowerLimit = Double.valueOf(lowerLimitStr);
-                Double upperLimit = Double.valueOf(upperLimitStr);
-                Double intervalWidth = upperLimit - lowerLimit;
-
-                Integer prevFrequency = i > 0 ? (Integer) table.getValueAt(i - 1, 3) : 0;
-                Integer nextFrequency = i < table.getRowCount() - 1 ? (Integer) table.getValueAt(i + 1, 3) : 0;
-
-                // Fórmula para la moda
-                mode = lowerLimit + ((frequency - prevFrequency) / ((frequency - prevFrequency) + (frequency - nextFrequency))) * intervalWidth;
+    for (String entry : dataEntries) {
+        entry = entry.trim();
+        if (!entry.isEmpty()) {
+            try {
+                double value = Double.parseDouble(entry.replace(",", "."));
+                dataList.add(value);
+                frequencyMap.put(value, frequencyMap.getOrDefault(value, 0) + 1);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Dato inválido: " + entry);
             }
         }
-        return mode;
     }
 
-    public void processAndCalculate(JTextArea txtAreaNum, JTable tblData, JTextField txtMe, JTextField txtX, JTextField txtMo, JTextField txtClasses) {
-        // Obtener los datos del JTextArea
-        String[] dataEntries = txtAreaNum.getText().split(" ");
+    // Calcular la moda
+    double mode = 0;
+    int maxFrequency = 0;
+    int modeCount = 0;
+    List<Double> modes = new ArrayList<>();
 
-        for (String entry : dataEntries) {
-            entry = entry.trim();  // Eliminar espacios
-            if (!entry.isEmpty()) {  // Evitar entradas vacías
-                try {
-                    // Reemplazar comas por puntos antes de convertir
-                    entry = entry.replace(",", ".");
-                    dataList.add(Double.parseDouble(entry));  // Convertir a double y añadir
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Dato inválido: " + entry);
-                }
+    for (Map.Entry<Double, Integer> entry : frequencyMap.entrySet()) {
+        int frequency = entry.getValue();
+        if (frequency > maxFrequency) {
+            maxFrequency = frequency;
+            mode = entry.getKey();
+            modes.clear();
+            modes.add(mode);
+            modeCount = 1;
+        } else if (frequency == maxFrequency) {
+            modes.add(entry.getKey());
+            modeCount++;
+        }
+    }
+
+    // Verificar si es bimodal o no hay moda
+    if (modeCount == 1) {
+        txtMo.setText(String.format("%.2f", mode)); // Mostrar la moda única en txtMo
+        return mode; // Retorna la moda si es única
+    } else if (modeCount == 2) {
+        JOptionPane.showMessageDialog(null, "La distribución es bimodal: " + modes.get(0) + " y " + modes.get(1));
+        txtMo.setText("Bimodal"); // Mostrar "Bimodal" en txtMo
+    } else {
+        JOptionPane.showMessageDialog(null, "No hay moda.");
+        txtMo.setText("No hay moda"); // Mostrar "No hay moda" en txtMo
+    }
+    
+    return 0;  // Si no hay una moda clara, retorna 0 o el valor que prefieras
+}
+
+
+
+  public void processAndCalculate(JTextArea txtAreaNum, JTable tblData, JTextField txtMe, JTextField txtX, JTextField txtMo, JTextField txtClasses) {
+    // Limpiar la lista de datos
+    dataList.clear();
+
+    // Obtener los datos del JTextArea y procesarlos
+    String[] dataEntries = txtAreaNum.getText().split("[,\\s]+");  // Dividir por comas o espacios
+
+    for (String entry : dataEntries) {
+        entry = entry.trim();  // Eliminar espacios adicionales
+        if (!entry.isEmpty()) {  // Evitar entradas vacías
+            try {
+                // Reemplazar comas por puntos antes de convertir
+                entry = entry.replace(",", ".");
+                dataList.add(Double.parseDouble(entry));  // Convertir a double y añadir a la lista
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Dato inválido: " + entry);
             }
         }
+    }
 
-        // Cargar las columnas de la tabla y realizar los cálculos
-        loadTableData(tblData);
-        calculateFirstColumn(tblData, Integer.parseInt(txtClasses.getText()));
-        calculateFifthColumn(tblData);  // Frecuencia relativa
-        calculateSixthColumn(tblData);  // Acumulada (-)
-        calculateSeventhColumn(tblData);  // Acumulada (+)
+    // Cargar las columnas de la tabla y realizar los cálculos
+    loadTableData(tblData);
+    calculateFirstColumn(tblData, Integer.parseInt(txtClasses.getText()));
+    calculateFifthColumn(tblData);  // Frecuencia relativa
+    calculateSixthColumn(tblData);  // Acumulada (-)
+    calculateSeventhColumn(tblData);  // Acumulada (+)
 
-        //TO ADD TOTAL VIEW IN THE TABLE
-        model.setValueAt("TOTAL", model.getRowCount() - 1, 2);
-        this.getTotal(); //method to calcule the totals
+    // Agregar "TOTAL" en la tabla
+    model.setValueAt("TOTAL", model.getRowCount() - 1, 2);
+    this.getTotal(); // Método para calcular los totales
 
-        // Calcular y mostrar la media
-        double mean = calculateMean(tblData);
-        txtMe.setText(String.format("%.2f", mean));
+    // Calcular y mostrar la media
+    double mean = calculateMean(tblData);
+    txtMe.setText(String.format("%.2f", mean));
 
-        // Calcular y mostrar la mediana
-        double median = calculateMedian(tblData);
-        txtX.setText(String.format("%.2f", median));
+    // Calcular y mostrar la mediana
+    double median = calculateMedian(tblData);
+    txtX.setText(String.format("%.2f", median));
 
-        // Calcular y mostrar la moda
-        double mode = calculateMode(tblData);
+    // Calcular y mostrar la moda a partir de los datos en txtAreaNum
+    double mode = calculateModeFromText(txtAreaNum.getText(), txtMo);
+    if (mode != 0) {
         txtMo.setText(String.format("%.2f", mode));
     }
+}
+
 
 // Método para generar una gráfica de columnas (Bar Chart)
     public void generateBarChart(JTable table) {
@@ -406,8 +449,143 @@ public class CtrlData {
 
     //METODO PARA VALIDAR EL TXTCLASSES
     public boolean validateNumber(String valor) {
-        Pattern patron = Pattern.compile("[1-9]*");
+        Pattern patron = Pattern.compile("^[1-9][0-9]*$");  // Asegura que el valor sea mayor a 0
         Matcher m = patron.matcher(valor);
         return m.matches();
     }
+
+        // Método que recibe la tabla, obtiene los datos y muestra los resultados
+public void mostrarResultadosDesdeTabla(JTable tabla) {
+    // Obtener los valores de la tabla
+    String media = obtenerValorDeTabla(tabla, "Limites Indicados");
+    String mediana = obtenerValorDeTabla(tabla, "Limites Reales");
+    String moda = obtenerValorDeTabla(tabla, "Puntos Medios Xi");
+    String frecuenciaAbsoluta = obtenerValorDeTabla(tabla, "Frecuencia absoluta");
+    String frecuenciaRelativa = obtenerValorDeTabla(tabla, "Frecuencia Relativa");
+    String acumAbsolutaPos = obtenerValorDeTabla(tabla, "ACUM absoluta(+)");
+    String acumRelativaPos = obtenerValorDeTabla(tabla, "ACUM Relativa(+)");
+    String acumAbsolutaNeg = obtenerValorDeTabla(tabla, "ACUM absoluta(-)");
+    String acumRelativaNeg = obtenerValorDeTabla(tabla, "ACUM Relativa(-)");
+
+    // Crear el array con los cálculos
+    String[] calculos = {
+        "Media Aritmética: " + media,
+        "Mediana: " + mediana,
+        "Moda: " + moda,
+        "Frecuencia Absoluta: " + frecuenciaAbsoluta,
+        "Frecuencia Relativa: " + frecuenciaRelativa,
+        "ACUM Absoluta (+): " + acumAbsolutaPos,
+        "ACUM Relativa (+): " + acumRelativaPos,
+        "ACUM Absoluta (-): " + acumAbsolutaNeg,
+        "ACUM Relativa (-): " + acumRelativaNeg
+    };
+
+    // Crear el JList con los cálculos
+    JList<String> listaCalculos = new JList<>(calculos);
+    JScrollPane scrollPane = new JScrollPane(listaCalculos);
+    scrollPane.setPreferredSize(new Dimension(250, 100));
+
+    // Crear el panel adicional con datos detallados
+    JPanel panelDetalles = new JPanel();
+    panelDetalles.setLayout(new BorderLayout());
+    panelDetalles.add(new JLabel("Datos Detallados"), BorderLayout.NORTH);
+    JTextArea txtAreaDetalles = new JTextArea(10, 30);
+    txtAreaDetalles.setText("Aquí se mostrarán los datos detallados de cada cálculo...");
+    txtAreaDetalles.setEditable(false);
+    panelDetalles.add(new JScrollPane(txtAreaDetalles), BorderLayout.CENTER);
+
+    // Botón para mostrar el panel adicional
+    JButton btnDetalles = new JButton("Ver Detalles");
+    btnDetalles.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JOptionPane.showMessageDialog(null, panelDetalles, "Detalles de Cálculos", JOptionPane.INFORMATION_MESSAGE);
+        }
+    });
+
+    // Crear el panel del resumen que incluye la lista y el botón
+    JPanel panelResumen = new JPanel(new BorderLayout());
+    panelResumen.add(scrollPane, BorderLayout.CENTER);
+    panelResumen.add(btnDetalles, BorderLayout.SOUTH);
+
+    // Mostrar el JOptionPane con el resumen
+    JOptionPane.showMessageDialog(null, panelResumen, "Resumen de Resultados", JOptionPane.INFORMATION_MESSAGE);
+}
+
+
+private String obtenerValorDeTabla(JTable tabla, String estadistica) {
+    // Obtener el modelo de la tabla
+    TableModel model = tabla.getModel();
+    
+    // Lista de las estadísticas esperadas (basado en los campos que diste)
+    String[] estadisticasEsperadas = {
+        "Limites Indicados", "Limites Reales", "Puntos Medios Xi",
+        "Frecuencia absoluta", "Frecuencia Relativa",
+        "ACUM absoluta(+)", "ACUM Relativa(+)",
+        "ACUM absoluta(-)", "ACUM Relativa(-)"
+    };
+
+    // Iterar sobre las filas de la tabla
+    for (int i = 0; i < model.getRowCount(); i++) {
+        // Obtener el valor de la primera columna (nombre de la estadística)
+        Object nombreEstadisticaObj = model.getValueAt(i, 0);  // Primera columna: Nombre de la estadística
+        
+        // Verificar si el valor no es null y si el nombre de la estadística coincide
+        if (nombreEstadisticaObj != null) {
+            String nombreEstadistica = nombreEstadisticaObj.toString();
+            for (String estadisticaEsperada : estadisticasEsperadas) {
+                if (nombreEstadistica.equals(estadisticaEsperada)) {
+                    // Si el nombre coincide, devolver el valor de la segunda columna (valor)
+                    Object valorObj = model.getValueAt(i, 1);  // Segunda columna: Valor
+                    return valorObj != null ? valorObj.toString() : "Valor no disponible";
+                }
+            }
+        }
+    }
+    
+    // Si no se encuentra la estadística en la tabla, devolver "No encontrado"
+    return "No encontrado";
+}
+
+
+    // Método para mostrar los resultados en un JOptionPane
+    private void mostrarResultados(String media, String mediana, String moda, String frecuenciaAcumuladaAbsoluta, String frecuenciaAcumuladaRelativa) {
+        // Los cálculos obtenidos
+        String[] calculos = {
+            "Media Aritmética: " + media,
+            "Mediana: " + mediana,
+            "Moda: " + moda,
+            "Frecuencia Acumulada Absoluta: " + frecuenciaAcumuladaAbsoluta,
+            "Frecuencia Acumulada Relativa: " + frecuenciaAcumuladaRelativa
+        };
+
+        // Crear el JList con los cálculos
+        JList<String> listaCalculos = new JList<>(calculos);
+        JScrollPane scrollPane = new JScrollPane(listaCalculos);
+        scrollPane.setPreferredSize(new Dimension(250, 100));
+
+        // Crear el panel adicional con datos detallados
+        JPanel panelDetalles = new JPanel();
+        panelDetalles.setLayout(new BorderLayout());
+        panelDetalles.add(new JLabel("Datos Detallados"), BorderLayout.NORTH);
+        JTextArea txtAreaDetalles = new JTextArea(10, 30);
+        txtAreaDetalles.setText("Aquí se mostrarán los datos detallados de cada cálculo...");
+        txtAreaDetalles.setEditable(false);
+        panelDetalles.add(new JScrollPane(txtAreaDetalles), BorderLayout.CENTER);
+
+        // Botón para mostrar el panel adicional
+        JButton btnDetalles = new JButton("Ver Detalles");
+        btnDetalles.addActionListener(e -> {
+            JOptionPane.showMessageDialog(null, panelDetalles, "Detalles de Cálculos", JOptionPane.INFORMATION_MESSAGE);
+        });
+
+        // Crear el panel del resumen que incluye la lista y el botón
+        JPanel panelResumen = new JPanel(new BorderLayout());
+        panelResumen.add(scrollPane, BorderLayout.CENTER);
+        panelResumen.add(btnDetalles, BorderLayout.SOUTH);
+
+        // Mostrar el JOptionPane con el resumen
+        JOptionPane.showMessageDialog(null, panelResumen, "Resumen de Resultados", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
 }
