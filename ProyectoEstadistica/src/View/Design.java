@@ -1,6 +1,12 @@
 package View;
 
 import Controller.CtrlData;
+import Controller.Graphics;
+import Controller.Pdf;
+import java.awt.image.BufferedImage;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 /**
  *
@@ -9,6 +15,8 @@ import Controller.CtrlData;
 public class Design extends javax.swing.JFrame {
 
     CtrlData controller = new CtrlData();  // Controller instance
+    Graphics grafic = new Graphics();
+    Pdf genPdf = new Pdf();
 
     /**
      * Creates new form Design
@@ -40,8 +48,8 @@ public class Design extends javax.swing.JFrame {
         btnCancel = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txtClasses = new javax.swing.JTextField();
+        btnPrint = new javax.swing.JButton();
         btnCalculate = new javax.swing.JButton();
-        btnResults = new javax.swing.JButton();
         pnlBottons = new javax.swing.JPanel();
         btnColumns = new javax.swing.JButton();
         btnOjiba = new javax.swing.JButton();
@@ -85,21 +93,21 @@ public class Design extends javax.swing.JFrame {
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 60, -1, -1));
         jPanel1.add(txtClasses, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 90, 190, 40));
 
+        btnPrint.setText("Imprimir");
+        btnPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrintActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnPrint, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 240, 90, 40));
+
         btnCalculate.setText("Calcular");
         btnCalculate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCalculateActionPerformed(evt);
             }
         });
-        jPanel1.add(btnCalculate, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 250, 90, 40));
-
-        btnResults.setText("Resultados");
-        btnResults.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnResultsActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnResults, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 250, 90, 40));
+        jPanel1.add(btnCalculate, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 250, 90, 40));
 
         pnlBottons.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Graficos"));
         pnlBottons.setOpaque(false);
@@ -196,15 +204,15 @@ public class Design extends javax.swing.JFrame {
 
 
     private void btnColumnsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColumnsActionPerformed
-        controller.generateBarChart(tblData);
+        grafic.generateBarChart(tblData);
     }//GEN-LAST:event_btnColumnsActionPerformed
 
     private void btnOjibaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOjibaActionPerformed
-        controller.generateOgiveChart(tblData);
+        grafic.generateOgiveChart(tblData);
     }//GEN-LAST:event_btnOjibaActionPerformed
 
     private void btnPieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPieActionPerformed
-        controller.generatePieChart(tblData);
+        grafic.generatePieChart(tblData);
     }//GEN-LAST:event_btnPieActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
@@ -212,9 +220,38 @@ public class Design extends javax.swing.JFrame {
         this.txtData.setText("");
     }//GEN-LAST:event_btnCancelActionPerformed
 
-    private void btnResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResultsActionPerformed
-        controller.mostrarResultadosDesdeTabla(tblData);
-    }//GEN-LAST:event_btnResultsActionPerformed
+    private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
+    // Crear un selector de archivos
+    JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setDialogTitle("Guardar PDF");
+
+    // Mostrar diálogo para elegir ubicación y nombre del archivo
+    if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+        String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+
+        // Asegurarse de que el archivo tenga la extensión .pdf
+        if (!filePath.endsWith(".pdf")) {
+            filePath += ".pdf";
+        }
+
+        // Obtener datos de la tabla y valores de estadísticas
+        JTable table = tblData;
+        String mean = this.txtMe.getText(); // Usa el texto de txtMe para la media
+        String median = this.txtX.getText(); // Usa el texto de txtX para la mediana
+        String mode = this.txtMo.getText(); // Usa el texto de txtMo para la moda
+
+        // Generar imágenes de los gráficos
+        BufferedImage barChartImage = grafic.generateBarChartImage(table);
+        BufferedImage pieChartImage = grafic.generatePieChartImage(table);
+        BufferedImage ogiveChartImage = grafic.generateOgiveChartImage(table);
+
+        // Llamar al controlador para generar el PDF con gráficos
+        genPdf.generarPDF(filePath, table, mean, median, mode, barChartImage, pieChartImage, ogiveChartImage);
+
+        // Confirmación al usuario
+        JOptionPane.showMessageDialog(null, "PDF generado exitosamente en " + filePath);
+    }
+    }//GEN-LAST:event_btnPrintActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCalculate;
@@ -222,7 +259,7 @@ public class Design extends javax.swing.JFrame {
     private javax.swing.JButton btnColumns;
     private javax.swing.JButton btnOjiba;
     private javax.swing.JButton btnPie;
-    private javax.swing.JButton btnResults;
+    private javax.swing.JButton btnPrint;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
